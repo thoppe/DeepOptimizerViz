@@ -14,9 +14,10 @@ os.system(f'mkdir -p {figure_dest}')
 
 assert(os.path.exists(f_h5))
 
-cutoff = 2000
-total_frames = 20000
-trail_iterations = 1000
+cutoff = 40000
+total_frames = 8000
+trail_iterations = 200
+skip_frames = 10
 
 with h5py.File(f_h5,'r') as h5:
     print(h5['real'].shape)
@@ -28,16 +29,19 @@ with h5py.File(f_h5,'r') as h5:
 
 
 print(x.shape)
-x = np.pad(x,((0,0), (0,total_frames-n_iters)), mode='constant')
-y = np.pad(y,((0,0), (0,total_frames-n_iters)), mode='constant')
+x = np.pad(x,((0,0), (trail_iterations,total_frames-n_iters)),
+               mode='constant')
+y = np.pad(y,((0,0), (trail_iterations,total_frames-n_iters)),
+               mode='constant')
 
 rl = np.random.randint(0, total_frames-n_iters-10, size=[N,])
 x = np.array([np.roll(_, k) for _,k in zip(x, rl)])
 y = np.array([np.roll(_, k) for _,k in zip(y, rl)])
 
+
 def plot_frame(k):
-    plt.clf()
-    plt.cla()
+    #plt.clf()
+    #plt.cla()
 
     
     x_pts = x[:,k:k+trail_iterations]
@@ -64,19 +68,22 @@ def plot_frame(k):
     rgba_colors[:,2] = 0.8
     rgba_colors[:,3] = alpha
 
-    pfig = plt.scatter(x_pts, y_pts, color=rgba_colors, lw=0,s=.1)
-
-    plt.axis('equal')
-    plt.axis('off')
-    plt.xlim(-2,2)
-    plt.ylim(-2,2)
-    #plt.tight_layout()
+    pts = np.array([x_pts.ravel(), y_pts.ravel()]).T
+    pfig.set_offsets(pts)
+    #pfig.set_color(rgba_colors)
 
     f_png = os.path.join(figure_dest, f'{k:06d}.png')
-    plt.savefig(f_png)
+    plt.savefig(f_png, pad_inches=0)
 
 plt.figure(figsize=(6,6))
+pfig = plt.scatter([], [], lw=0,s=.1)
 
-for k in tqdm(range(0, 8000, 10)):
+plt.axis('equal')
+plt.axis('off')
+plt.xlim(-2,2)
+plt.ylim(-2,2)
+plt.tight_layout()
+
+for k in tqdm(range(0, total_frames, skip_frames)):
     plot_frame(k)
 
