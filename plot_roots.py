@@ -10,7 +10,7 @@ name = "RMSProp"
 #total_frames = 6000
 
 cutoff = 40000
-total_frames = 6000
+total_frames = 600
 
 trail_iterations = 200
 skip_frames = 10
