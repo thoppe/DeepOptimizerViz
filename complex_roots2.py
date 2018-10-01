@@ -1,13 +1,14 @@
 import tensorflow as tf
 import numpy as np
 from tqdm import tqdm
-#import pylab as plt
 import os
 import h5py
 
 N = 10**5
 n_iters = 4000
-name = "RMSProp"
+#name = "RMSProp"
+#name = "ADAM"
+name = "GradientDescent"
 tolerance = 0.01
 
 optimizers = {

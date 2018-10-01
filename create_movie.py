@@ -3,12 +3,15 @@ import joblib
 from tqdm import tqdm
 from glob import glob
 
-f_video = "animation.avi"
+name = "ADAM"
+name = "GradientDescent"
+
+f_video = f"{name}_animation.avi"
 fps = 29.0
 skip_frames = 1
 fractional_size = 0.75
 
-F_IMAGE = sorted(glob("images/*.png"))[:][::skip_frames]
+F_IMAGE = sorted(glob(f"images/{name}/*.png"))[:][::skip_frames]
 first_frame = cv2.imread(F_IMAGE[0])
 
 height, width, layers = first_frame.shape
@@ -36,4 +39,4 @@ for img in tqdm(images):
 cv2.destroyAllWindows()
 video.release()
 
-#frames = [cv2.imread(img) for img
+print (f_video)

@@ -5,9 +5,10 @@ from tqdm import tqdm
 import pylab as plt
 import seaborn as sns
 
-name = "RMSProp"
-#cutoff = 40000
-#total_frames = 6000
+#name = "RMSProp"
+name = "ADAM"
+name = "GradientDescent"
+
 
 cutoff = 40000
 total_frames = 600
@@ -18,7 +19,7 @@ skip_frames = 10
 save_dest = "zero_data"
 f_h5 = os.path.join(save_dest, f"{name}_zeros.h5")
 
-figure_dest = 'images'
+figure_dest = os.path.join('images', name)
 os.system(f'mkdir -p {figure_dest}')
 
 assert(os.path.exists(f_h5))
