@@ -6,7 +6,7 @@ import pylab as plt
 import seaborn as sns
 
 #name = "RMSProp"
-name = "ADAM"
+#name = "ADAM"
 name = "GradientDescent"
 
 

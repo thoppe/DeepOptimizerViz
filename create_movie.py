@@ -4,7 +4,8 @@ from tqdm import tqdm
 from glob import glob
 
 name = "ADAM"
-name = "GradientDescent"
+#name = "GradientDescent"
+#name = "RMSProp"
 
 f_video = f"{name}_animation.avi"
 fps = 29.0

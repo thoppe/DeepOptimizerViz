@@ -4,6 +4,10 @@ from tqdm import tqdm
 import os
 import h5py
 
+np.random.seed(42)
+n_poly = 10
+coeffs = [a+b*1J for a,b in np.random.normal(size=(n_poly, 2))]
+
 N = 10**5
 n_iters = 4000
 #name = "RMSProp"
@@ -38,8 +42,12 @@ def sample_model(name, N, n_iters):
         tf.Variable(tf.random_normal([N,], mean=0, stddev=5.0)),
     )
 
-    quadratic = x**2 + 1
-    term_error = tf.abs(quadratic)
+    #quadratic = x**2 + 1
+    poly = 0
+    for k,coeff in enumerate(coeffs[::-1]):
+        poly += coeff*tf.pow(x, k)
+    
+    term_error = tf.abs(poly)
     loss = tf.reduce_sum(term_error)
     train_op = opt.minimize(loss)
 
