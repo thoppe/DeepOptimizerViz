@@ -10,9 +10,9 @@ coeffs = [a+b*1J for a,b in np.random.normal(size=(n_poly, 2))]
 
 N = 10**5
 n_iters = 4000
-#name = "RMSProp"
+name = "RMSProp"
 #name = "ADAM"
-name = "GradientDescent"
+#name = "GradientDescent"
 tolerance = 0.01
 
 optimizers = {
@@ -71,6 +71,7 @@ def sample_model(name, N, n_iters):
 
 
 save_dest = "zero_data"
+os.system(f'mkdir -p {save_dest}')
 f_h5 = os.path.join(save_dest, f"{name}_zeros.h5")
 
 #if not os.path.exists(f_h5):
