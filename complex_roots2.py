@@ -12,7 +12,7 @@ N = 10**5
 n_iters = 4000
 name = "RMSProp"
 #name = "ADAM"
-#name = "GradientDescent"
+name = "GradientDescent"
 tolerance = 0.01
 
 optimizers = {
