@@ -11,7 +11,6 @@ class dataset_loader():
             cutoff = 5000,
             total_frames = 600,
             trail_iterations = 200,
-            skip_frames = 10,
 
             extent_x=2.0,
             extent_y=2.0,
