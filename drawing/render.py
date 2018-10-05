@@ -13,8 +13,11 @@ name = "ADAM"
 # Set to unity to not blend (much faster)
 is_blended_alpha = 1.0
 
-background_color = [200, 200, 250]
-line_color = [255, 0, 0]
+#background_color = [200, 200, 250]
+#line_color = [255, 0, 0]
+
+background_color = [0,]*3
+line_color = [255,]*3
 
 upscale = 1.5
 width = int(512*upscale)
@@ -70,30 +73,15 @@ def render_frame(k):
             cv2.polylines(img, [pts], False, line_color, 1, cv2.LINE_AA)
 
 
-    #edges = cv2.Canny(img,100,400)
+    mask = np.average(img, axis=2)<120
+
+    kernal_size = 3
+    blur = cv2.GaussianBlur(img, (kernal_size, kernal_size), 0)
+    blur[mask] = img[mask]
+    img = blur
     
 
-    '''
-    mask = (np.linalg.norm(img, axis=2) > (255/2)).astype(np.uint8).reshape(width, height, -1)
-    print(mask)
-    img *= mask
-    return mask
-    
-    #kernel = np.ones((2,2),np.uint8)
-    #erosion = cv2.dilate(img,kernel,iterations = 1)
-    
-    return erosion
-    print(erosion)
-    exit()
-    #background=(np.ones((width, height, 3))*background_color).astype(np.uint8)
-    
-    #cv2.addWeighted(
-    #    background, 0.8, img, 0.85, 0, img)
-    '''
-
-
-    img = Y_histnorm(img)
-    
+    img = Y_histnorm(img)  
     
     if upscale != 1:
         img = cv2.resize(img, (0,0), fx=1/upscale, fy=1/upscale)
@@ -104,10 +92,12 @@ def render_frame(k):
 
 # Problem with frames < 500
 
+'''
 img = render_frame(1240)
 cv2.imshow(f'image', img)
 cv2.waitKey(0)
 exit()
+'''
 
 k = 1210
 for k in tqdm(range(600, 2000, 50)):
