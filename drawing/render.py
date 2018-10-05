@@ -34,6 +34,19 @@ M = dataset_loader(
     trail_iterations=trail_iterations,
 )
 
+def Y_histnorm(img, clipLimit=2.0, tileGridSize=(8,8)):
+
+    # Convert to YUV
+    img_yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+    
+    # Equalize the histogram of the Y channel
+    clahe = cv2.createCLAHE(
+        clipLimit=clipLimit, tileGridSize=tileGridSize)
+    
+    img_yuv[:,:,0] = clahe.apply(img_yuv[:,:,0])
+
+    # Convert back to BGR format
+    return cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)
 
 
 def render_frame(k):
@@ -56,6 +69,7 @@ def render_frame(k):
         else:
             cv2.polylines(img, [pts], False, line_color, 1, cv2.LINE_AA)
 
+
     #edges = cv2.Canny(img,100,400)
     
 
@@ -77,17 +91,8 @@ def render_frame(k):
     #    background, 0.8, img, 0.85, 0, img)
     '''
 
-    
-    # equalize the histogram of the Y channel
-    img_yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
-    # equalize the histogram of the Y channel
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
 
-    #img_yuv[:,:,k] = cv2.equalizeHist(img_yuv[:,:,k])
-    img_yuv[:,:,0] = clahe.apply(img_yuv[:,:,0])
-    
-    # convert the YUV image back to RGB format
-    img = cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)
+    img = Y_histnorm(img)
     
     
     if upscale != 1:
@@ -99,10 +104,10 @@ def render_frame(k):
 
 # Problem with frames < 500
 
-#img = render_frame(1240)
-#cv2.imshow(f'image', img)
-#cv2.waitKey(0)
-#exit()
+img = render_frame(1240)
+cv2.imshow(f'image', img)
+cv2.waitKey(0)
+exit()
 
 k = 1210
 for k in tqdm(range(600, 2000, 50)):
