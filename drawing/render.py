@@ -22,7 +22,6 @@ line_color = [255,]*3
 upscale = 1.5
 width = int(512*upscale)
 height = int(512*upscale)
-trail_iterations = 200
 
 M = dataset_loader(
     name,
@@ -30,11 +29,11 @@ M = dataset_loader(
     #cutoff=40000,
     cutoff=4000,
     total_frames=600,
+    trail_iterations=200,
     
     height=height,
     extent_x = 2.0,
     extent_y = 2.0,
-    trail_iterations=trail_iterations,
 )
 
 def Y_histnorm(img, clipLimit=2.0, tileGridSize=(8,8)):
@@ -90,14 +89,19 @@ def render_frame(k):
 
     return img
 
-img = render_frame(0)
-cv2.imshow(f'image', img)
-cv2.waitKey(0)
-exit()
+#img = render_frame(0)
+#cv2.imshow(f'image', img)
+#cv2.waitKey(0)
+#exit()
 
 k = 1210
-for k in tqdm(range(600, 2000, 50)):
+for k in tqdm(range(0, len(M), 50)):
     img = render_frame(k)
+    img2 = render_frame( len(M) - k  )
+
+    img = cv2.add(img, img2)
+
+
     cv2.imshow(f'image',img)
     cv2.waitKey(1)
 

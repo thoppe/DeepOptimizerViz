@@ -73,9 +73,11 @@ class dataset_loader():
         self.x = x
         self.y = y
 
-        print(len(self.x))
 
 
+    def __len__(self):
+        return len(self.x)
+        
     def __getitem__(self, k):
 
 
