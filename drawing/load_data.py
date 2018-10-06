@@ -23,7 +23,7 @@ class dataset_loader():
         self.width = width
         self.height = height
 
-        load_dest = "../zero_data"
+        load_dest = "zero_data"
         f_h5 = os.path.join(load_dest, f"{name}_zeros.h5")
 
         assert(os.path.exists(f_h5))
@@ -50,11 +50,34 @@ class dataset_loader():
             trail_iterations,
             total_frames-trail_iterations, size=[len(x),])
 
-        self.x = np.array([np.roll(_, k) for _,k in zip(x, rl)])
-        self.y = np.array([np.roll(_, k) for _,k in zip(y, rl)])
+        x = np.array([np.roll(_, k) for _,k in zip(x, rl)])
+        y = np.array([np.roll(_, k) for _,k in zip(y, rl)])
+
+        # Clip the start, end of the roll
+        clip_start = total_frames
+        clip_end = n_iters - trail_iterations
+        x = x[:, clip_start:][:, :clip_end]
+        y = y[:, clip_start:][:, :clip_end]
+
+        '''
+        print(x.sum(axis=0))
+        q = x.sum(axis=0)
+        import pylab as plt
+        plt.plot(q)
+        plt.show()
+        #exit()
+        #x = x[:, :-trail_iterations]
+        #y = y[:, :-trail_iterations]
+        '''
+        
+        self.x = x
+        self.y = y
+
+        print(len(self.x))
 
 
     def __getitem__(self, k):
+
 
         x_pts = self.x[:,k:k+self.trail_iterations]
         y_pts = self.y[:,k:k+self.trail_iterations]

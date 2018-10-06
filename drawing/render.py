@@ -90,14 +90,10 @@ def render_frame(k):
 
     return img
 
-# Problem with frames < 500
-
-'''
-img = render_frame(1240)
+img = render_frame(0)
 cv2.imshow(f'image', img)
 cv2.waitKey(0)
 exit()
-'''
 
 k = 1210
 for k in tqdm(range(600, 2000, 50)):
