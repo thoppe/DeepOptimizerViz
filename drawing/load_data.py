@@ -7,7 +7,7 @@ class dataset_loader():
 
     def __init__(
             self,
-            name, 
+            f_h5, 
             cutoff = 5000,
             total_frames = 600,
             trail_iterations = 200,
@@ -22,9 +22,6 @@ class dataset_loader():
         self.extent_y = extent_y
         self.width = width
         self.height = height
-
-        load_dest = "zero_data"
-        f_h5 = os.path.join(load_dest, f"{name}_zeros.h5")
 
         assert(os.path.exists(f_h5))
 

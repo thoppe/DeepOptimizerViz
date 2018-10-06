@@ -6,9 +6,9 @@ from load_data import dataset_loader
 # Style ideas
 # http://www.windytan.com/2017/12/animated-line-drawings-with-opencv.html
 
-#name = "RMSProp"
-#name = "GradientDescent"
-name = "ADAM"
+#name = "zero_data/RMSProp.h5"
+#name = "zero_data/GradientDescent.h5"
+f_h5 = "zero_data/ADAM.h5"
 
 # Set to unity to not blend (much faster)
 is_blended_alpha = 1.0
@@ -24,7 +24,7 @@ width = int(512*upscale)
 height = int(512*upscale)
 
 M = dataset_loader(
-    name,
+    f_h5,
     width=width,
     #cutoff=40000,
     cutoff=4000,
