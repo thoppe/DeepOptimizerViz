@@ -89,12 +89,11 @@ def render_frame(k):
 
     return img
 
-img = render_frame(0)
-cv2.imshow(f'image', img)
-cv2.waitKey(0)
-exit()
+#img = render_frame(0)
+#cv2.imshow(f'image', img)
+#cv2.waitKey(0)
+#exit()
 
-k = 1210
 for k in tqdm(range(0, len(M), 50)):
     img = render_frame(k)
     img2 = render_frame( len(M) - k  )

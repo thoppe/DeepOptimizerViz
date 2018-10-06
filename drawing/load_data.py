@@ -76,7 +76,7 @@ class dataset_loader():
 
 
     def __len__(self):
-        return len(self.x)
+        return self.x.shape[1]
         
     def __getitem__(self, k):
 
