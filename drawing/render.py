@@ -7,36 +7,47 @@ from load_data import dataset_loader
 # Style ideas
 # http://www.windytan.com/2017/12/animated-line-drawings-with-opencv.html
 
+is_debug = False
+
 f_h5 = "zero_data/RMSProp_zeros.h5"
 #f_h5 = "zero_data/GradientDescent_zeros.h5"
 #f_h5 = "zero_data/ADAM_zeros.h5"
+#f_h5 = "zero_data/FTRL_zeros.h5"
 
 # Set to unity to not blend (much faster)
 is_blended_alpha = 1.0
 line_color = [255, ] * 3
+frame_skip = 25
 
 upscale = 1.5
+extent = 1.25
 
 image_args = {
     "f_h5" : f_h5,
     'total_frames':600,
     'trail_iterations':200,
-    'width':int(512 * upscale),
-    'height':int(512 * upscale),
-    'extent_x':2.0,
-    'extent_y':2.0,
+    #'width':int(512 * upscale),
+    #'height':int(512 * upscale),
+
+    'width':int(1280 * upscale),
+    'height':int(720 * upscale),
+    
+    'extent_x':extent,
+    'extent_y':extent,
+    'cutoff':4000,
 }
 
+image_args['extent_x'] *= image_args['width']/image_args['height']
+
 M1 = dataset_loader(
-    cutoff=4000,
     **image_args,
 )
 
-M2 = dataset_loader(
-    cutoff=4000,
-    offset=4000,
-    **image_args,
-)
+if not is_debug:
+    M2 = dataset_loader(
+        offset=4000,
+        **image_args,
+    )
 
 
 
@@ -55,12 +66,12 @@ def Y_histnorm(img, clipLimit=2.0, tileGridSize=(8, 8)):
     return cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)
 
 
-def render_frame(M, k, background_color=[0, 0, 0]):
+def render_frame(M, k, upscale=1.5, background_color=[0, 0, 0]):
 
     X, Y = M[k]
 
     # Create a black image
-    img = 255 * np.ones((M.width, M.height, 3), np.uint8)
+    img = 255 * np.ones((M.height, M.width, 3), np.uint8)
     img[:, :, :] = background_color
 
     for lx, ly in zip(X, Y):
@@ -85,22 +96,28 @@ def render_frame(M, k, background_color=[0, 0, 0]):
     img = Y_histnorm(img)
 
     if upscale != 1:
-        img = cv2.resize(img, (0, 0), fx=1 / upscale, fy=1 / upscale)
+        factor = 1/upscale
+        img = cv2.resize(img, (0, 0), fx=factor, fy=factor)
 
     return img
 
-# img = render_frame(M1, 0)
-# cv2.imshow(f'image', img)
-# cv2.waitKey(0)
-# exit()
+if is_debug:
+    img = render_frame(M1, 0)
+    cv2.imshow(f'image', img)
+    cv2.waitKey(0)
+    exit()
 
-
+img = render_frame(M1, 0)
+cv2.imshow(f'image', img)
+cv2.waitKey(4000)
+cv2.destroyAllWindows()
 
 # Compute a frame schedule that moves slowly then quickly
 N = len(M1)
 x = np.sin(np.linspace(0,np.pi, N))
+#x = np.linspace(0,np.pi, N)
+
 frame_n = np.round(N*np.cumsum(x)/x.sum()).astype(int)
-frame_skip = 50
 save_dest = "frames"
 os.system(f'rm -rvf {save_dest} && mkdir -p {save_dest}')
 
@@ -134,6 +151,11 @@ for i, k in enumerate(tqdm(ITR)):
 
 
 cv2.destroyAllWindows()
+f_mp4 = f'{os.path.basename(f_h5)}.mp4'
 
-cmd = f'ffmpeg -framerate 30 -i {save_dest}/%04d.png  -c:v libx264 -profile:v high -crf 10 -pix_fmt yuv420p {os.path.basename(f_h5)}.mp4'
+cmd = f'ffmpeg -y -framerate 30 -i {save_dest}/%04d.png  -c:v libx264 -profile:v high -crf 10 -pix_fmt yuv420p {f_mp4}'
 print(cmd)
+os.system(cmd)
+
+cmd = f'xdg-open {f_mp4}'
+os.system(cmd)

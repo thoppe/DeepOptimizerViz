@@ -13,10 +13,11 @@ n_iters = 4000
 name = "RMSProp"
 name = "ADAM"
 name = "GradientDescent"
+name = "FTRL"
 tolerance = 0.01
 
 optimizers = {
-    "GradientDescent": tf.train.GradientDescentOptimizer(0.001),
+    "GradientDescent": tf.train.GradientDescentOptimizer(0.0001),
 
     "Momentum": tf.train.MomentumOptimizer(0.001, 0.001),
     "ADAM": tf.train.AdamOptimizer(0.001),

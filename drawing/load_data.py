@@ -46,13 +46,13 @@ class dataset_loader():
         # Stagger the lines so they don't all start at once
         rl = np.random.randint(
             trail_iterations,
-            total_frames - trail_iterations, size=[len(x), ])
+            total_frames - trail_iterations - 2, size=[len(x), ])
 
         x = np.array([np.roll(_, k) for _, k in zip(x, rl)])
         y = np.array([np.roll(_, k) for _, k in zip(y, rl)])
 
         # Clip the start, end of the roll
-        clip_start = total_frames
+        clip_start = total_frames 
         clip_end = n_iters - trail_iterations
         x = x[:, clip_start:][:, :clip_end]
         y = y[:, clip_start:][:, :clip_end]
