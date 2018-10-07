@@ -9,6 +9,8 @@ class dataset_loader():
             self,
             f_h5,
             cutoff=5000,
+            offset=0,
+            
             total_frames=600,
             trail_iterations=200,
 
@@ -28,8 +30,8 @@ class dataset_loader():
         # Read the data in from complex_roots2.py
         with h5py.File(f_h5, 'r') as h5:
             print(h5['real'].shape)
-            x = h5['real'][:cutoff]
-            y = h5['imag'][:cutoff]
+            x = h5['real'][offset:offset+cutoff]
+            y = h5['imag'][offset:offset+cutoff]
             n_iters = h5.attrs['n_iters']
 
         self.trail_iterations = trail_iterations

@@ -11,8 +11,8 @@ coeffs = [a + b * 1J for a, b in np.random.normal(size=(n_poly, 2))]
 N = 10**5
 n_iters = 4000
 name = "RMSProp"
-# name = "ADAM"
-# name = "GradientDescent"
+name = "ADAM"
+name = "GradientDescent"
 tolerance = 0.01
 
 optimizers = {
