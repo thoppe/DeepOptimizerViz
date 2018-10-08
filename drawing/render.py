@@ -7,6 +7,7 @@ from load_data import dataset_loader
 # Style ideas
 # http://www.windytan.com/2017/12/animated-line-drawings-with-opencv.html
 
+is_debug = True
 is_debug = False
 
 f_h5 = "zero_data/RMSProp_zeros.h5"
@@ -16,11 +17,20 @@ f_h5 = "zero_data/RMSProp_zeros.h5"
 
 # Set to unity to not blend (much faster)
 is_blended_alpha = 1.0
-line_color = [255, ] * 3
-frame_skip = 25
+
+line_color0 = [206, 187, 134][::-1]
+background_color = [0, 0, 0]
+
+# Goldfish theme
+#background_color = [224,228,204][::-1]
+#line_color0 = [250,105,0][::-1]
+#line_color1 = [105,210,231][::-1]
+
+frame_skip = 250
 
 upscale = 1.5
 extent = 1.25
+n_trails = 10000
 
 image_args = {
     "f_h5" : f_h5,
@@ -34,7 +44,7 @@ image_args = {
     
     'extent_x':extent,
     'extent_y':extent,
-    'cutoff':4000,
+    'cutoff':n_trails,
 }
 
 image_args['extent_x'] *= image_args['width']/image_args['height']
@@ -45,10 +55,9 @@ M1 = dataset_loader(
 
 if not is_debug:
     M2 = dataset_loader(
-        offset=4000,
+        offset=10,
         **image_args,
     )
-
 
 
 def Y_histnorm(img, clipLimit=2.0, tileGridSize=(8, 8)):
@@ -66,9 +75,15 @@ def Y_histnorm(img, clipLimit=2.0, tileGridSize=(8, 8)):
     return cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)
 
 
-def render_frame(M, k, upscale=1.5, background_color=[0, 0, 0]):
+def render_frame(
+        M, k, upscale=1.5,
+        background_color=[0,0,0],
+        line_color=[255,255,255],
+        kernel_blur_size = 17,
+):
 
     X, Y = M[k]
+    print(len(X))
 
     # Create a black image
     img = 255 * np.ones((M.height, M.width, 3), np.uint8)
@@ -79,17 +94,20 @@ def render_frame(M, k, upscale=1.5, background_color=[0, 0, 0]):
 
         if is_blended_alpha != 1:
             img_blend = img.copy()
-            cv2.polylines(img_blend, [pts], False, line_color, 1, cv2.LINE_AA)
+            cv2.polylines(img_blend, [pts], False,
+                              line_color, 1, cv2.LINE_AA)
             cv2.addWeighted(
-                img_blend, is_blended_alpha, img, 1 - is_blended_alpha, 0, img)
+                img_blend, is_blended_alpha,
+                img, 1 - is_blended_alpha, 0, img)
 
         else:
-            cv2.polylines(img, [pts], False, line_color, 1, cv2.LINE_AA)
+            cv2.polylines(img, [pts], False,
+                              line_color, 1, cv2.LINE_AA)
 
-    mask = np.average(img, axis=2) < 120
+    dist = np.linalg.norm(img - line_color,axis=2)
+    mask = dist < 50
 
-    kernal_size = 3
-    blur = cv2.GaussianBlur(img, (kernal_size, kernal_size), 0)
+    blur = cv2.GaussianBlur(img, (kernel_blur_size,)*2, 0)
     blur[mask] = img[mask]
     img = blur
 
@@ -101,17 +119,24 @@ def render_frame(M, k, upscale=1.5, background_color=[0, 0, 0]):
 
     return img
 
-if is_debug:
-    img = render_frame(M1, 0)
+
+'''
+render_args = {
+    "background_color": background_color,
+    "line_color":line_color0,
+}
+
+if not is_debug:
+    img = render_frame(M1, 0, **render_args)
     cv2.imshow(f'image', img)
     cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if is_debug:
     exit()
+'''
 
-img = render_frame(M1, 0)
-cv2.imshow(f'image', img)
-cv2.waitKey(4000)
-cv2.destroyAllWindows()
-
+    
 # Compute a frame schedule that moves slowly then quickly
 N = len(M1)
 x = np.sin(np.linspace(0,np.pi, N))
@@ -122,29 +147,35 @@ save_dest = "frames"
 os.system(f'rm -rvf {save_dest} && mkdir -p {save_dest}')
 
 ITR = frame_n[::frame_skip]
-
 alpha = np.linspace(0, 1, len(ITR))
+
+render_args0 = {
+    "background_color": background_color,
+    "line_color":line_color0,
+}
+
 
 for i, k in enumerate(tqdm(ITR)):
     
-    img = render_frame(M1, k)
-    img2 = render_frame(M2, N - k)
+    img = render_frame(M1, k, **render_args0)
+    img2 = render_frame(M2, N - k, **render_args0)
 
     img = cv2.add(img, img2)
+    
     f_png = os.path.join(save_dest, f'{i:04d}.png')
     cv2.imwrite(f_png, img)
 
     #cv2.imshow(f'image', img)
-    #cv2.waitKey(1)
 
 last_known_frame = i
 
 for i, k in enumerate(tqdm(ITR)):
     
-    img = render_frame(M2, k)
-    img2 = render_frame(M1, N - k)
+    img = render_frame(M2, k, **render_args0)
+    img2 = render_frame(M1, N - k, **render_args0)
 
     img = cv2.add(img, img2)
+    
     f_png = os.path.join(
         save_dest, f'{last_known_frame+i:04d}.png')
     cv2.imwrite(f_png, img)
