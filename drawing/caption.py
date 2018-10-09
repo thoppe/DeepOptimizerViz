@@ -29,7 +29,12 @@ def caption(
         orientation = "bottom_left",
 ):
     font = ImageFont.truetype(f_font, font_size)
-    img = cv2.imread(f_image)
+
+    if type(f_image) == type("string"):
+        img = cv2.imread(f_image)
+    else:
+        img = f_image
+        
     h, w, _ = img.shape
     
     # Measure the font

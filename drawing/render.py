@@ -3,6 +3,7 @@ import cv2
 import os
 from tqdm import tqdm
 from load_data import dataset_loader
+from caption import caption
 
 # Style ideas
 # http://www.windytan.com/2017/12/animated-line-drawings-with-opencv.html
@@ -12,7 +13,7 @@ is_debug = False
 
 f_h5 = "zero_data/RMSProp_zeros.h5"
 #f_h5 = "zero_data/GradientDescent_zeros.h5"
-#f_h5 = "zero_data/ADAM_zeros.h5"
+f_h5 = "zero_data/ADAM_zeros.h5"
 #f_h5 = "zero_data/FTRL_zeros.h5"
 
 # Set to unity to not blend (much faster)
@@ -24,9 +25,9 @@ background_color = [0, 0, 0]
 # Goldfish theme
 #background_color = [224,228,204][::-1]
 #line_color0 = [250,105,0][::-1]
-#line_color1 = [105,210,231][::-1]
+#line_color0 = [105,210,231][::-1]
 
-frame_skip = 5
+frame_skip = 10
 
 upscale = 1.5
 extent = 1.25
@@ -55,7 +56,7 @@ M1 = dataset_loader(
 
 if not is_debug:
     M2 = dataset_loader(
-        offset=10,
+        offset=n_trails,
         **image_args,
     )
 
@@ -118,22 +119,31 @@ def render_frame(
 
     return img
 
-
-'''
+name = os.path.basename(f_h5).split('_')[0]
+print(name)
+if name == "RMSProp":
+    name = "RMS Prop"
+    
+caption_args = {
+    'f_font' : "design_src/Alien-Encounters-Regular.ttf",
+    'alpha': 0.35,
+    'font_size':60,
+    'font_color' : [105,210,231],
+}
 render_args = {
     "background_color": background_color,
     "line_color":line_color0,
 }
 
-if not is_debug:
-    img = render_frame(M1, 0, **render_args)
-    cv2.imshow(f'image', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+img = render_frame(M1, 0, **render_args)
+img = caption(name, img, **caption_args)
+cv2.imshow(f'image', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 if is_debug:
     exit()
-'''
+
 
     
 # Compute a frame schedule that moves slowly then quickly
@@ -142,7 +152,7 @@ x = np.sin(np.linspace(0,np.pi, N))
 #x = np.linspace(0,np.pi, N)
 
 frame_n = np.round(N*np.cumsum(x)/x.sum()).astype(int)
-save_dest = "frames"
+save_dest = os.path.join("frames", os.path.basename(f_h5))
 os.system(f'rm -rvf {save_dest} && mkdir -p {save_dest}')
 
 ITR = frame_n[::frame_skip]
@@ -160,6 +170,7 @@ for i, k in enumerate(tqdm(ITR)):
     img2 = render_frame(M2, N - k, **render_args0)
 
     img = cv2.add(img, img2)
+    img = caption(name, img, **caption_args)
     
     f_png = os.path.join(save_dest, f'{i:04d}.png')
     cv2.imwrite(f_png, img)
@@ -174,6 +185,7 @@ for i, k in enumerate(tqdm(ITR)):
     img2 = render_frame(M1, N - k, **render_args0)
 
     img = cv2.add(img, img2)
+    img = caption(name, img, **caption_args)
     
     f_png = os.path.join(
         save_dest, f'{last_known_frame+i:04d}.png')
