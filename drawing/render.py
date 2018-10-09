@@ -26,7 +26,7 @@ background_color = [0, 0, 0]
 #line_color0 = [250,105,0][::-1]
 #line_color1 = [105,210,231][::-1]
 
-frame_skip = 250
+frame_skip = 5
 
 upscale = 1.5
 extent = 1.25
@@ -83,7 +83,6 @@ def render_frame(
 ):
 
     X, Y = M[k]
-    print(len(X))
 
     # Create a black image
     img = 255 * np.ones((M.height, M.width, 3), np.uint8)
