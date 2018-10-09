@@ -41,34 +41,37 @@ def caption(
     else:
         raise ValueError(f"Unknown orientation {orientation}")
 
-    print(w, h, tw, th)
-    print(x,y)
-    
     # Convert the image to RGB (OpenCV uses BGR)
     canvas = Image.fromarray(np.zeros_like(img))
 
     # Draw the text onto the text canvas
     draw = ImageDraw.Draw(canvas)
-    draw.text((x,y), text, font_color, font)
+    draw.text((x,y), text, tuple(font_color), font)
 
     # Convert the image back to something CV2 likes
     timg = cv2.cvtColor(np.array(canvas), cv2.COLOR_RGB2BGR)
 
     if blur:
-        timg = focus_blur(timg, blur)
+        timg = focus_blur(timg, blur, font_color)
 
-    img = cv2.addWeighted(timg, 1-alpha, img, 1.0, 0)
+    if alpha:
+        img = cv2.addWeighted(timg, 1-alpha, img, 1.0, 0)
+    else:
+        img = cv2.add(timg, img)
     
     return img
 
 if __name__ == "__main__":
     f_img = "frames/0000.png"
 
-    f_font = "design_src/slkscr.ttf"
+    #f_font = "design_src/slkscr.ttf"
+    #f_font = "design_src/ka1.ttf"
+    f_font = "design_src/Alien-Encounters-Regular.ttf"
 
-    img = caption("RMS Prop", f_img, f_font)
+    img = caption(
+        "RMS Prop", f_img, f_font, alpha=0.25,
+        font_size=70,
+        font_color=[105,210,231]
+    )
     cv2.imshow(f'image', img)
     cv2.waitKey(0)
-
-
-
