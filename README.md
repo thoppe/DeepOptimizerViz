@@ -1,6 +1,8 @@
 # Optimizers
 
-Visualize the convergence of complex roots with different optimizers. Watch it in (action)[https://www.youtube.com/watch?v=Z-CiRcrJiKo].
+Visualize the convergence of complex roots with different optimizers. Watch it in [action](https://www.youtube.com/watch?v=Z-CiRcrJiKo).
+
+[Hack && Tell Presentation link](https://thoppe.github.io/DeepOptimizerViz/)
 
 
 [![TitleScreen](docs/figures/title_screen.jpg)](https://www.youtube.com/watch?v=Z-CiRcrJiKo)
