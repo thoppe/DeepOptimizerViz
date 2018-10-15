@@ -1,2 +1,2 @@
 all:
-	miniprez HnT_pres.md
+	miniprez index.md
