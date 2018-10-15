@@ -117,88 +117,142 @@
    </div>
   </div>
  </div>
-</section><section class="slide-bottom bg-black slide" id="slide-number-2">
- <video autoplay="" class="background-video" loop="">
-  <source src="videos/Sunset1_frames.mp4">
-  </source>
- </video>
+</section><section class="bg-black slide" id="slide-number-2">
  <div class="wrap">
- </div>
- <footer>
-  <h1>
+  <h2>
    <text>
-    Sunset: Original
+    What is an optimizer?
+   </text>
+  </h2>
+  <img src="images/GD.png" style="width:400px"/>
+  <h4>
+   <text>
+    There are lots of them! Gradient Descent, Adam, RMS Prop, Momentum, Adagrad...
+    <text>
+     Used to solve problems in deep learning. In general, can solve any problem with a gradient.
+    </text>
+   </text>
+  </h4>
+ </div>
+</section><section class="bg-white slide" id="slide-number-3">
+ <div class="wrap">
+  <h1 class="text-landing">
+   <text>
+    <strong>
+     What other problems?
+    </strong>
    </text>
   </h1>
- </footer>
-</section><section class="slide-bottom bg-black slide" id="slide-number-3">
- <video autoplay="" class="background-video" loop="">
-  <source src="videos/Sunset1_width.mp4">
-  </source>
- </video>
- <div class="wrap">
- </div>
- <footer>
+  <text>
+   <br>
+    <br>
+     <br/>
+    </br>
+   </br>
+  </text>
+  <h2>
+   <text>
+    <div class="equation" data-expr="x^2 + 1 = 0">
+    </div>
+   </text>
+  </h2>
   <h1>
    <text>
-    Sunset: time 🔀 height
+    <em>
+     Solve for x
+    </em>
+    , get two roots
+    <em>
+     i, -i
+    </em>
    </text>
   </h1>
- </footer>
-</section><section class="slide-bottom bg-black slide" id="slide-number-4">
- <video autoplay="" class="background-video" loop="">
-  <source src="videos/Sunset1_height.mp4">
-  </source>
- </video>
- <div class="wrap">
- </div>
- <footer>
+  <text>
+   <br>
+    <br>
+     <br/>
+    </br>
+   </br>
+  </text>
+  <h2>
+   <text>
+    <div class="equation" data-expr="2.3 x^3 -0.4x^2 + 0.1x + 2.8 = 0">
+    </div>
+   </text>
+  </h2>
   <h1>
    <text>
-    Sunset: time 🔀 width
+    <em>
+     Solve for x
+    </em>
+    , get three roots...
    </text>
   </h1>
- </footer>
+ </div>
+</section><section class="bg-black slide" id="slide-number-4">
+ <div class="aligncenter">
+  <h1>
+   <text>
+    Shape of convergence depends on the optimizer!
+   </text>
+  </h1>
+ </div>
+ <div class="aligncenter">
+  <img src="figures/early_figures/GradientDescent_quadratic_roots.png" style="width:275px"/>
+  <img src="figures/early_figures/ADAM_quadratic_roots.png" style="width:275px"/>
+  <img src="figures/early_figures/RMSProp_quadratic_roots.png" style="width:275px"/>
+  <img src="figures/early_figures/Momentum_quadratic_roots.png" style="width:275px"/>
+  <text>
+   <br>
+    Gradient Descent, ADAM, RMS Prop, Momentum
+   </br>
+  </text>
+ </div>
+ <div class="aligncenter">
+  <img src="figures/early_figures/ProximalAdagrad_quadratic_roots.png" style="width:275px"/>
+  <img src="figures/early_figures/ProximalGradientDescent_quadratic_roots.png" style="width:275px"/>
+  <img src="figures/early_figures/Adagrad_quadratic_roots.png" style="width:275px"/>
+  <img src="figures/early_figures/FTRL_quadratic_roots.png" style="width:275px"/>
+  <text>
+   <br>
+    Proximal AdaGrad, Proximal Gradient Descent, Adagrad, FTRL
+   </br>
+  </text>
+ </div>
 </section><section class="slide-bottom bg-black slide" id="slide-number-5">
- <video autoplay="" class="background-video" loop="">
-  <source src="videos/Sunset1_all.mp4">
-  </source>
- </video>
- <div class="wrap">
+ <div class="aligncenter">
+  <text>
+   Add some style. Used
+   <code>
+    cv2
+   </code>
+   and image processing tricks
+   <br/>
+  </text>
+  <img src="figures/early_figures/ADAM_stylized.png" style="width:600px"/>
  </div>
-</section><section class="wrap slide" id="slide-number-6">
- <h1 class="text-data">
+</section><section class="bg-black slide" id="slide-number-6">
+ <div class="aligncenter">
+  <img src="figures/ADAM.jpg" style="width:400px"/>
+  <img src="figures/GradientDescent.jpg" style="width:400px"/>
+  <img src="figures/RMSProp.jpg" style="width:400px"/>
   <text>
-   ☀
-   <a href="sunset.html">
-    Sunset
-   </a>
+   <br>
+    <br>
+     <br/>
+    </br>
+   </br>
   </text>
- </h1>
- <h1 class="text-landing">
-  <text>
-   ☁
-   <a href="clouds.html">
-    Clouds
+  <div class="text-landing">
+   <a class="button ghost" href="https://www.youtube.com/watch?v=Z-CiRcrJiKo">
+    <text>
+     <i aria-hidden="true" class="fa fa-youtube">
+     </i>
+     Deep Optimizers
+    </text>
    </a>
-  </text>
- </h1>
- <h1 class="text-landing">
-  <text>
-   🍃
-   <a href="rural.html">
-    Rural
-   </a>
-  </text>
- </h1>
- <h1 class="text-landing">
-  <text>
-   🌊
-   <a href="beach.html">
-    Beach
-   </a>
-  </text>
- </h1>
+  </div>
+ </div>
 </section>
    </article>
   </main>

@@ -14,24 +14,59 @@
   @button(href="https://twitter.com/metasemantic") .ghost .alignleft
    ::twitter:: @metasemantic 
 
----- .slide-bottom .bg-black
+---- .bg-black 
 
-@background_video(url="videos/Sunset1_frames.mp4")
-@footer @h1 Sunset: Original 
+.wrap
+	@h2 What is an optimizer?
+	@img(images/GD.png width=400px) 
+	
+	@h4 
+	
+		There are lots of them! Gradient Descent, Adam, RMS Prop, Momentum, Adagrad...
 
----- .slide-bottom .bg-black
-@background_video(url="videos/Sunset1_width.mp4")
-@footer @h1 Sunset: time :twisted_rightwards_arrows: height
+	    Used to solve problems in deep learning. In general, can solve any problem with a gradient.
 
----- .slide-bottom .bg-black
-@background_video(url="videos/Sunset1_height.mp4")
-@footer @h1 Sunset: time :twisted_rightwards_arrows: width
+---- .bg-white
+ 
+.wrap
+	@h1 .text-landing **What other problems?**
+	<br><br><br>
+	@h2 $x^2 + 1 = 0$
+	@h1 _Solve for x_, get two roots _i, -i_
+	<br><br><br>
+	@h2 $2.3 x^3 -0.4x^2 + 0.1x + 2.8 = 0$
+	@h1 _Solve for x_, get three roots...
+	
+----- .bg-black
 
----- .slide-bottom .bg-black
-@background_video(url="videos/Sunset1_all.mp4")
+.aligncenter @h1 Shape of convergence depends on the optimizer!
 
----- .wrap
-@h1 .text-data :sunny: [Sunset](sunset.html)
-@h1 .text-landing :cloud: [Clouds](clouds.html)
-@h1 .text-landing :leaves: [Rural](rural.html)
-@h1 .text-landing :ocean: [Beach](beach.html)
+.aligncenter
+	@img(src=figures/early_figures/GradientDescent_quadratic_roots.png width=275px)
+	@img(src=figures/early_figures/ADAM_quadratic_roots.png width=275px)
+	@img(src=figures/early_figures/RMSProp_quadratic_roots.png width=275px)
+	@img(src=figures/early_figures/Momentum_quadratic_roots.png width=275px)
+	<br> Gradient Descent, ADAM, RMS Prop, Momentum
+
+.aligncenter	
+	@img(src=figures/early_figures/ProximalAdagrad_quadratic_roots.png width=275px)
+	@img(src=figures/early_figures/ProximalGradientDescent_quadratic_roots.png width=275px)
+	@img(src=figures/early_figures/Adagrad_quadratic_roots.png width=275px)
+	@img(src=figures/early_figures/FTRL_quadratic_roots.png width=275px)
+	<br> Proximal AdaGrad, Proximal Gradient Descent, Adagrad, FTRL
+
+---- .slide-bottom .bg-black 
+
+.aligncenter 
+	Add some style. Used `cv2` and image processing tricks<br>
+	@img(src=figures/early_figures/ADAM_stylized.png width=600px)
+
+---- .bg-black 
+
+.aligncenter 
+ @img(src="figures/ADAM.jpg" width=400px) 
+ @img(src="figures/GradientDescent.jpg" width=400px)
+ @img(src="figures/RMSProp.jpg" width=400px)
+ 
+ <br> <br> <br>
+ .text-landing @button(href="https://www.youtube.com/watch?v=Z-CiRcrJiKo") .ghost ::youtube:: Deep Optimizers
