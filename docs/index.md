@@ -1,19 +1,21 @@
------ .dark
-@unsplash(rbRa_Gs_mb0) 
+----- .bg-black
+@unsplash(0IvpEBGw8aw) 
 
-.wrap
- @h1 .text-data **timecube**
- @h2 (length, height, time) ::arrow-right:: (time, height, length)
+.wrap 
+ @h1 .text-data **Deep Optimizers**
 
-
-@footer
  @div .wrap @div .span
-  @button(href="https://github.com/thoppe/timecube") .alignleft .ghost
-   ::github:: github.com/thoppe/timecube
-  @button(href="https://twitter.com/metasemantic") .ghost .alignright
+  @button(href="https://github.com/thoppe/DeepOptimizerViz") .alignleft .ghost
+   ::github:: github.com/thoppe/DeepOptimizerViz
+   
+  @button(href="https://www.youtube.com/watch?v=Z-CiRcrJiKo") .alignleft .ghost
+   ::youtube:: Watch it live
+   
+  @button(href="https://twitter.com/metasemantic") .ghost .alignleft
    ::twitter:: @metasemantic 
 
 ---- .slide-bottom .bg-black
+
 @background_video(url="videos/Sunset1_frames.mp4")
 @footer @h1 Sunset: Original 
 
